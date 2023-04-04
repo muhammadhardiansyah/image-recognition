@@ -1,51 +1,14 @@
 const classifier = knnClassifier.create();
 const webcamElement = document.getElementById('webcam');
 let net;
-
-// async function app() {
-//     console.log('Loading mobilenet..');
-
-//     // Load the model.
-//     net = await mobilenet.load();
-//     console.log('Successfully loaded model');
-
-//     // Make a prediction through the model on our image.
-//     const imgEl = document.getElementById('img');
-//     const result = await net.classify(imgEl);
-//     console.log(result);
-// }
-// async function app() {
-//     console.log('Loading mobilenet..');
-
-//     // Load the model.
-//     net = await mobilenet.load();
-//     console.log('Successfully loaded model');
-
-//     // Create an object from Tensorflow.js data API which could capture image
-//     // from the web camera as Tensor.
-//     const webcam = await tf.data.webcam(webcamElement);
-//     while (true) {
-//         const img = await webcam.capture();
-//         const result = await net.classify(img);
-
-//         document.getElementById('console').innerText = `
-//         prediction: ${result[0].className}\n
-//         probability: ${result[0].probability}
-//         `;
-//         // Dispose the tensor to release the memory.
-//         img.dispose();
-
-//         // Give some breathing room by waiting for the next animation frame to
-//         // fire.
-//         await tf.nextFrame();
-//     }
-// }
 async function app() {
-    console.log('Loading mobilenet..');
+    document.getElementById('status').innerHtml = 'Loading mobilenet..';
 
     // Load the model.
     net = await mobilenet.load();
-    console.log('Successfully loaded model');
+    document.getElementById('status').innerText = 'Succesfully Loaded Model';
+    document.getElementById('status').classList.remove('alert-danger');
+    document.getElementById('status').classList.add('alert-success');
 
     // Create an object from Tensorflow.js data API which could capture image
     // from the web camera as Tensor.
@@ -83,9 +46,11 @@ async function app() {
             const result = await classifier.predictClass(activation);
 
             const classes = ['Dog', 'Cat', 'Snake'];
-            document.getElementById('console').innerText = `
-            prediction: ${classes[result.label]}\n
-            probability: ${result.confidences[result.label]}
+            document.getElementById('console1').innerText = `
+            Prediction: ${classes[result.label]}
+            `;
+            document.getElementById('console2').innerText = `
+            Probability: ${result.confidences[result.label]}
             `;
 
             // Dispose the tensor to release the memory.
